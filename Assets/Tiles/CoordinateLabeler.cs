@@ -11,11 +11,18 @@ namespace ProtectTheCrown
     public class CoordinateLabeler : MonoBehaviour
     {
         private TextMeshPro _label;
-        private Vector2Int _coordinates = new();
+        private Vector2Int _coordinates;
+        private Waypoints _waypoints;
+        private Color _defaultColor = Color.white;
+        private Color _changedColor = Color.gray;
         
         private void Awake()
         {
             _label = GetComponent<TextMeshPro>();
+            _waypoints = GetComponentInParent<Waypoints>();
+            
+            _label.enabled = false;
+           
             DisplayCoordinates();
         }
 
@@ -25,6 +32,29 @@ namespace ProtectTheCrown
             {
                 DisplayCoordinates();
                 DisplayObjectName();
+            }
+
+            ColorCoordinates();
+            ToggleLabels();
+        }
+
+        private void ToggleLabels()
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                _label.enabled = !_label.IsActive();
+            }
+        }
+
+        private void ColorCoordinates()
+        {
+            if (!_waypoints.GetIsPlaceable())
+            {
+                _label.color = _changedColor;
+            }
+            else
+            {
+                _label.color = _defaultColor;
             }
         }
 

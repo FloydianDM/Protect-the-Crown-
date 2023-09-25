@@ -7,11 +7,23 @@ namespace ProtectTheCrown
 {
     public class TargetFinder : MonoBehaviour
     {
-        [SerializeField] private GameObject enemy;
+        [SerializeField] private Transform shooter;
 
+        private Transform _target;
+
+        private void Start()
+        {
+            _target = FindObjectOfType<EnemyMovement>().transform;
+        }
+        
         private void Update()
         {
-            transform.LookAt(enemy.transform);
+            AimTarget();
+        }
+
+        private void AimTarget()
+        {
+            shooter.LookAt(_target);
         }
     }
 }

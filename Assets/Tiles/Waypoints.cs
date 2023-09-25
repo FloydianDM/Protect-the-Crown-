@@ -8,7 +8,12 @@ namespace ProtectTheCrown
     public class Waypoints : MonoBehaviour
     {
         [SerializeField] private bool isPlaceable;
-        [SerializeField] private GameObject tower; 
+        [SerializeField] private GameObject tower;
+
+        public bool GetIsPlaceable()
+        {
+            return isPlaceable;
+        }
    
         private void OnMouseDown()
         {

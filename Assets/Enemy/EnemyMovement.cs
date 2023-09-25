@@ -32,8 +32,6 @@ namespace ProtectTheCrown
                     
                     yield return new WaitForEndOfFrame();
                 }
-                
-                
             }
         }
     }
