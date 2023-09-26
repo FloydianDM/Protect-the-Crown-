@@ -7,6 +7,8 @@ namespace ProtectTheCrown
 {
     public class TargetFinder : MonoBehaviour
     {
+        // Targeting enemies in scene.
+        
         [SerializeField] private Transform shooter;
 
         private Transform _target;

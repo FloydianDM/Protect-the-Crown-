@@ -9,9 +9,28 @@ namespace ProtectTheCrown
         [SerializeField] private List<Waypoints> path = new();
         [SerializeField] [Range(0f, 5f)] private float speed = 1f;
         
-        private void Start()
+        private void OnEnable()
         {
+            FindPath();
+            ReturnToStart();
             StartCoroutine(FollowPath());
+        }
+
+        private void FindPath()
+        {
+            path.Clear();
+            
+            GameObject[] pathWaypoints = GameObject.FindGameObjectsWithTag("Path");
+
+            foreach (var waypoint in pathWaypoints)
+            {
+                path.Add(waypoint.GetComponent<Waypoints>());
+            }
+        }
+
+        private void ReturnToStart()
+        {
+            transform.position = path[0].transform.position;
         }
 
         private IEnumerator FollowPath()
@@ -33,6 +52,8 @@ namespace ProtectTheCrown
                     yield return new WaitForEndOfFrame();
                 }
             }
+
+            gameObject.SetActive(false); // return enemy object to object pool
         }
     }
 }

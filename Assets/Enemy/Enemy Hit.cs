@@ -7,11 +7,13 @@ namespace ProtectTheCrown
 {
     public class EnemyHit : MonoBehaviour
     {
+        // Controls enemy health and HP
+        
         [SerializeField] private int maxHitPoint = 5;
 
         private int _enemyHitPoint;
 
-        private void Start()
+        private void OnEnable()
         {
             _enemyHitPoint = maxHitPoint;
         }
@@ -32,7 +34,7 @@ namespace ProtectTheCrown
 
             if (_enemyHitPoint <= 0)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false); // return enemy object to object pool
             }
         }
     }

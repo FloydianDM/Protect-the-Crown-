@@ -7,8 +7,18 @@ namespace ProtectTheCrown
 {
     public class Waypoints : MonoBehaviour
     {
+        // Waypoint locator
+        // Instantiate defenses by clicking on waypoint tiles
+        
         [SerializeField] private bool isPlaceable;
         [SerializeField] private GameObject tower;
+
+        private ObjectPool _objectPool;
+
+        private void Start()
+        {
+            _objectPool = FindObjectOfType<ObjectPool>();
+        }
 
         public bool GetIsPlaceable()
         {
@@ -19,7 +29,7 @@ namespace ProtectTheCrown
         {
             if (isPlaceable)
             {
-                Instantiate(tower, transform.position, Quaternion.identity, gameObject.transform);
+                Instantiate(tower, transform.position, Quaternion.identity, _objectPool.transform);
                 Debug.Log(gameObject.name);
                 isPlaceable = false;
             }

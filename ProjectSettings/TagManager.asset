@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Weapon
+  - Path
   layers:
   - Default
   - TransparentFX
