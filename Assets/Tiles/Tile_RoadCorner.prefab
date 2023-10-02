@@ -57,6 +57,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -2432090755550338912, guid: 626410dc07212d749823da2540a223bb, type: 3}
     - target: {fileID: 1372897755177657090, guid: 8bb7bcdbb5a5a47dbbea7bbfeddb52c4, type: 3}
+      propertyPath: tower
+      value: 
+      objectReference: {fileID: -3006498730485502921, guid: 8a965e088bae16643aab3d07ccfd5e2e, type: 3}
+    - target: {fileID: 1372897755177657090, guid: 8bb7bcdbb5a5a47dbbea7bbfeddb52c4, type: 3}
       propertyPath: isPlaceable
       value: 0
       objectReference: {fileID: 0}

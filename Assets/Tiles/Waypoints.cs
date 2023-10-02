@@ -11,14 +11,7 @@ namespace ProtectTheCrown
         // Instantiate defenses by clicking on waypoint tiles
         
         [SerializeField] private bool isPlaceable;
-        [SerializeField] private GameObject tower;
-
-        private ObjectPool _objectPool;
-
-        private void Start()
-        {
-            _objectPool = FindObjectOfType<ObjectPool>();
-        }
+        [SerializeField] private Defense tower;
 
         public bool GetIsPlaceable()
         {
@@ -29,9 +22,8 @@ namespace ProtectTheCrown
         {
             if (isPlaceable)
             {
-                Instantiate(tower, transform.position, Quaternion.identity, _objectPool.transform);
-                Debug.Log(gameObject.name);
-                isPlaceable = false;
+                bool isPlaced = tower.CreateTower(tower, transform.position);
+                isPlaceable = !isPlaced;
             }
         }
     }

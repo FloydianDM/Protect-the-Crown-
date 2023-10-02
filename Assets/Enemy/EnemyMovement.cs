@@ -8,12 +8,19 @@ namespace ProtectTheCrown
     {
         [SerializeField] private List<Waypoints> path = new();
         [SerializeField] [Range(0f, 5f)] private float speed = 1f;
+
+        private Enemy _enemy;
         
         private void OnEnable()
         {
             FindPath();
             ReturnToStart();
             StartCoroutine(FollowPath());
+        }
+
+        private void Start()
+        {
+            _enemy = GetComponent<Enemy>();
         }
 
         private void FindPath()
@@ -52,8 +59,20 @@ namespace ProtectTheCrown
                     yield return new WaitForEndOfFrame();
                 }
             }
+            
+            StealGold();
 
             gameObject.SetActive(false); // return enemy object to object pool
+        }
+
+        private void StealGold()
+        {
+            if (_enemy == null)
+            {
+                return;
+            }
+            
+            _enemy.PenaltyGold();
         }
     }
 }
