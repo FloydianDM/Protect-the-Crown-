@@ -7,6 +7,11 @@ using TMPro;
 
 namespace ProtectTheCrown
 {
+    /// <summary>
+    /// Move the script to Editor folder while building the project
+    /// </summary>
+    
+    [RequireComponent(typeof(TextMeshPro))]
     [ExecuteAlways]
     public class CoordinateLabeler : MonoBehaviour
     {
@@ -34,7 +39,7 @@ namespace ProtectTheCrown
                 DisplayObjectName();
             }
 
-            ColorCoordinates();
+            SetLabelColor();
             ToggleLabels();
         }
 
@@ -46,7 +51,7 @@ namespace ProtectTheCrown
             }
         }
 
-        private void ColorCoordinates()
+        private void SetLabelColor()
         {
             if (!_waypoints.GetIsPlaceable())
             {

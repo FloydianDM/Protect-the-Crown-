@@ -12,8 +12,8 @@ namespace ProtectTheCrown
         // Instantiate enemies every second of play.
         
         [SerializeField] private GameObject enemy;
-        [SerializeField] private int poolSize = 5;
-        [SerializeField] private float spawnTime = 1f;
+        [SerializeField] [Range(0, 50)] private int poolSize = 5;
+        [SerializeField] [Range(0.1f, 20f)] private float spawnTime = 1f;
 
         private GameObject[] _pool;
 

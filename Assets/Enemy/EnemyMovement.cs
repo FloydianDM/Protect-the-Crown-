@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace ProtectTheCrown
 {
+    [RequireComponent(typeof(Enemy))]
     public class EnemyMovement : MonoBehaviour
     {
         [SerializeField] private List<Waypoints> path = new();
@@ -27,11 +28,16 @@ namespace ProtectTheCrown
         {
             path.Clear();
             
-            GameObject[] pathWaypoints = GameObject.FindGameObjectsWithTag("Path");
+            GameObject pathTilesParent = GameObject.FindGameObjectWithTag("Path");
 
-            foreach (var waypoint in pathWaypoints)
+            foreach (Transform child in pathTilesParent.transform)
             {
-                path.Add(waypoint.GetComponent<Waypoints>());
+                Waypoints waypoint = child.GetComponent<Waypoints>();
+
+                if (waypoint != null)
+                {
+                    path.Add(waypoint);
+                }
             }
         }
 
@@ -60,11 +66,15 @@ namespace ProtectTheCrown
                 }
             }
             
+            FinishPath(); // Reduce the gold from bank and set the enemy inactive
+        }
+        
+        private void FinishPath()
+        {
             StealGold();
-
             gameObject.SetActive(false); // return enemy object to object pool
         }
-
+        
         private void StealGold()
         {
             if (_enemy == null)
