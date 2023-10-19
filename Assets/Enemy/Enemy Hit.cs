@@ -12,7 +12,7 @@ namespace ProtectTheCrown
         
         [SerializeField] private int maxHitPoint = 5;
         
-        [Tooltip("Adds emount of extra hitpoints to nre enemy when enemy dies")]
+        [Tooltip("Adds amount of extra hitpoints to nre enemy when enemy dies")]
         [SerializeField] private int difficultyMultiplier = 1;
         
         private Enemy _enemy;
