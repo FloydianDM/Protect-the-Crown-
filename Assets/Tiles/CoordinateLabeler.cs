@@ -37,6 +37,7 @@ namespace ProtectTheCrown
             {
                 DisplayCoordinates();
                 DisplayObjectName();
+                _label.enabled = true;
             }
 
             SetLabelColor();
