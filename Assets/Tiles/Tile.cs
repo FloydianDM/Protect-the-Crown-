@@ -41,9 +41,13 @@ namespace ProtectTheCrown
         {
             if (_gridManager.GetNode(_coordinates).isWalkable && !_pathfinder.WillBlockPath(_coordinates))
             {
-                bool isPlaced = tower.CreateTower(tower, transform.position);
-                isPlaceable = !isPlaced;
-                _gridManager.BlockNode(_coordinates);
+                bool isSuccessful = tower.CreateTower(tower, transform.position);
+                
+                if (isSuccessful)
+                {
+                    _gridManager.BlockNode(_coordinates);
+                    _pathfinder.NotifyReceivers();
+                }
             }
         }
     }

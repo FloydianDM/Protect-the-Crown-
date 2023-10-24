@@ -73,7 +73,7 @@ namespace ProtectTheCrown
         {
             Vector3 position = new Vector3();
             position.x = Mathf.RoundToInt(coordinates.x * unityGridSize);
-            position.y = Mathf.RoundToInt(coordinates.y * unityGridSize);
+            position.z = Mathf.RoundToInt(coordinates.y * unityGridSize);
 
             return position;
         }

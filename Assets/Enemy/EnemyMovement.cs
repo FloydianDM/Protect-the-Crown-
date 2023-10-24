@@ -7,52 +7,57 @@ namespace ProtectTheCrown
     [RequireComponent(typeof(Enemy))]
     public class EnemyMovement : MonoBehaviour
     {
-        [SerializeField] private List<Tile> path = new();
         [SerializeField] [Range(0f, 5f)] private float speed = 1f;
-
+        
+        private List<Node> _path = new();
         private Enemy _enemy;
+        private GridManager _gridManager;
+        private Pathfinder _pathfinder;
         
         private void OnEnable()
         {
-            FindPath();
             ReturnToStart();
-            StartCoroutine(FollowPath());
+            FindPath(true);
         }
 
-        private void Start()
+        private void Awake()
         {
             _enemy = GetComponent<Enemy>();
+            _gridManager = FindObjectOfType<GridManager>();
+            _pathfinder = FindObjectOfType<Pathfinder>();
         }
 
-        private void FindPath()
+        private void FindPath(bool resetPath)
         {
-            path.Clear();
-            
-            GameObject pathTilesParent = GameObject.FindGameObjectWithTag("Path");
+            Vector2Int coordinates = new Vector2Int();
 
-            foreach (Transform child in pathTilesParent.transform)
+            if (resetPath)
             {
-                Tile tile = child.GetComponent<Tile>();
-
-                if (tile != null)
-                {
-                    path.Add(tile);
-                }
+                coordinates = _pathfinder.StartingCoordinates;
             }
+            else
+            {
+                coordinates = _gridManager.GetCoordinatesFromPosition(transform.position);
+            }
+            
+            StopAllCoroutines();
+            _path.Clear();
+            _path = _pathfinder.GetNewPath(coordinates);
+            StartCoroutine(FollowPath());
         }
 
         private void ReturnToStart()
         {
-            transform.position = path[0].transform.position;
+            transform.position = _gridManager.GetPositionFromCoordinates(_pathfinder.StartingCoordinates);
         }
 
         private IEnumerator FollowPath()
         {
-            foreach (Tile waypoint in path)
+            for (int i = 1; i < _path.Count; i++)
             {
                 // LERP Function fpr smooth movement of enemy
                 Vector3 startPosition = transform.position;
-                Vector3 endPosition = waypoint.transform.position;
+                Vector3 endPosition = _gridManager.GetPositionFromCoordinates(_path[i].coordinates);
                 float travelPercent = 0f;
                 
                 transform.LookAt(endPosition);

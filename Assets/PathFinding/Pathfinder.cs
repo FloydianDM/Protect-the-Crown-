@@ -11,7 +11,9 @@ namespace ProtectTheCrown
         // Breadth First Search (BFS) Pathfinding Algorithm
 
         [SerializeField] private Vector2Int startingCoordinates;
+        public Vector2Int StartingCoordinates => startingCoordinates;
         [SerializeField] private Vector2Int destinationCoordinates;
+        public Vector2Int DestinationCoordinates => destinationCoordinates;
         
         private Node _startingNode;
         private Node _destinationNode;
@@ -27,24 +29,34 @@ namespace ProtectTheCrown
         private void Awake()
         {
             _gridManager = FindObjectOfType<GridManager>();
+
+            if (_gridManager != null)
+            {
+                _grid = _gridManager.Grid;
+                _startingNode = _grid[startingCoordinates];
+                _destinationNode = _grid[destinationCoordinates];
+            }
         }
 
         private void Start()
         {
-            _startingNode = _gridManager.Grid[startingCoordinates];
-            _destinationNode = _gridManager.Grid[destinationCoordinates];
-
             GetNewPath();
         }
 
-        private List<Node> GetNewPath()
+        public List<Node> GetNewPath()
+        {
+            return GetNewPath(startingCoordinates);
+        }
+        
+        public List<Node> GetNewPath(Vector2Int coordinates)
         {
             _gridManager.ResetNodes();
-            BreadthFirstSearch();
+            BreadthFirstSearch(coordinates);
             BuildPath();
 
             return BuildPath();
         }
+        
 
         private void ExploreNeighbors()
         {
@@ -59,7 +71,7 @@ namespace ProtectTheCrown
             foreach (Vector2Int direction in _directions)
             {
                 Vector2Int nextNodeCoordinates = _currentSearchNode.coordinates + direction;
-                if (_gridManager.Grid.ContainsKey(nextNodeCoordinates))
+                if (_grid.ContainsKey(nextNodeCoordinates))
                 {
                     neighbors.Add(_gridManager.Grid[nextNodeCoordinates]);
                 }
@@ -76,15 +88,18 @@ namespace ProtectTheCrown
             }
         }
 
-        private void BreadthFirstSearch()
+        private void BreadthFirstSearch(Vector2Int coordinates)
         {
+            _startingNode.isWalkable = true;
+            _destinationNode.isWalkable = true;
+            
             _frontierRoute.Clear();
             _reachedRoute.Clear();
             
             bool isRunning = true;
             
-            _frontierRoute.Enqueue(_startingNode);
-            _reachedRoute.Add(startingCoordinates, _startingNode);
+            _frontierRoute.Enqueue(_grid[coordinates]);
+            _reachedRoute.Add(coordinates, _grid[coordinates]);
 
             while (_frontierRoute.Count > 0 && isRunning)
             {
@@ -135,6 +150,11 @@ namespace ProtectTheCrown
             }
             
             return false;
+        }
+
+        public void NotifyReceivers()
+        {
+            BroadcastMessage("FindPath", false, SendMessageOptions.DontRequireReceiver);
         }
     }   
 }
