@@ -17,14 +17,16 @@ namespace ProtectTheCrown
     {
         private TextMeshPro _label;
         private Vector2Int _coordinates;
-        private Waypoints _waypoints;
+        private GridManager _gridManager;
         private Color _defaultColor = Color.white;
-        private Color _changedColor = Color.gray;
+        private Color _blockedColor = Color.gray;
+        private Color _exploredColor = Color.red;
+        private Color _pathColor = Color.blue;
         
         private void Awake()
         {
             _label = GetComponent<TextMeshPro>();
-            _waypoints = GetComponentInParent<Waypoints>();
+            _gridManager = FindObjectOfType<GridManager>();
             
             _label.enabled = false;
            
@@ -39,7 +41,7 @@ namespace ProtectTheCrown
                 DisplayObjectName();
                 _label.enabled = true;
             }
-
+            
             SetLabelColor();
             ToggleLabels();
         }
@@ -54,9 +56,23 @@ namespace ProtectTheCrown
 
         private void SetLabelColor()
         {
-            if (!_waypoints.GetIsPlaceable())
+            if (_gridManager == null) {return;}
+
+            Node node = _gridManager.GetNode(_coordinates); // temporary Node object for method only
+            
+            if (node == null) {return;}
+            
+            if (!node.isWalkable)
             {
-                _label.color = _changedColor;
+                _label.color = _blockedColor;
+            }
+            else if (node.isPath)
+            {
+                _label.color = _pathColor;
+            }
+            else if (node.isExplored)
+            {
+                _label.color = _exploredColor;
             }
             else
             {
@@ -66,8 +82,10 @@ namespace ProtectTheCrown
 
         private void DisplayCoordinates()
         {
-            _coordinates.x = (int)(transform.parent.position.x / EditorSnapSettings.move.x);
-            _coordinates.y = (int)(transform.parent.position.z / EditorSnapSettings.move.z);
+            if (_gridManager == null) { return;}
+            
+            _coordinates.x = Mathf.RoundToInt(transform.parent.position.x / _gridManager.UnityGridSize);
+            _coordinates.y = Mathf.RoundToInt(transform.parent.position.z / _gridManager.UnityGridSize);
 
             _label.text = $"{_coordinates.x} , {_coordinates.y}";
         }

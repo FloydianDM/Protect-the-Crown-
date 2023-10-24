@@ -7,7 +7,7 @@ namespace ProtectTheCrown
     [RequireComponent(typeof(Enemy))]
     public class EnemyMovement : MonoBehaviour
     {
-        [SerializeField] private List<Waypoints> path = new();
+        [SerializeField] private List<Tile> path = new();
         [SerializeField] [Range(0f, 5f)] private float speed = 1f;
 
         private Enemy _enemy;
@@ -32,11 +32,11 @@ namespace ProtectTheCrown
 
             foreach (Transform child in pathTilesParent.transform)
             {
-                Waypoints waypoint = child.GetComponent<Waypoints>();
+                Tile tile = child.GetComponent<Tile>();
 
-                if (waypoint != null)
+                if (tile != null)
                 {
-                    path.Add(waypoint);
+                    path.Add(tile);
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace ProtectTheCrown
 
         private IEnumerator FollowPath()
         {
-            foreach (Waypoints waypoint in path)
+            foreach (Tile waypoint in path)
             {
                 // LERP Function fpr smooth movement of enemy
                 Vector3 startPosition = transform.position;
